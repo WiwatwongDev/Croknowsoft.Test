@@ -3,6 +3,13 @@
 import { useState } from 'react'
 import { ChevronRightIcon, CodeBracketIcon, CpuChipIcon, CircleStackIcon, PresentationChartBarIcon, CalculatorIcon } from '@heroicons/react/24/outline'
 
+// Import Question Components
+import Question1 from './components/Question1'
+import Question2 from './components/Question2'
+import Question3 from './components/Question3'
+import Question4 from './components/Question4'
+import Question5 from './components/Question5'
+
 interface TestQuestion {
   id: number
   title: string
@@ -67,28 +74,21 @@ export default function Home() {
     setCurrentPage('home')
   }
 
-  // Import question components (in real app, these would be separate files)
-  const Question1 = () => <div>Question 1 Component would be imported here</div>
-  const Question2 = () => <div>Question 2 Component would be imported here</div> 
-  const Question3 = () => <div>Question 3 Component would be imported here</div>
-  const Question4 = () => <div>Question 4 Component would be imported here</div>
-  const Question5 = () => <div>Question 5 Component would be imported here</div>
-
   // Render different pages based on current page
   if (currentPage === 'q1') {
-    return <Question1 />
+    return <Question1 onBack={handleBackToHome} onHome={handleBackToHome} />
   }
   if (currentPage === 'q2') {
-    return <Question2 />
+    // return <Question2 onBack={handleBackToHome} onHome={handleBackToHome} />
   }
   if (currentPage === 'q3') {
-    return <Question3 />
+    // return <Question3 onBack={handleBackToHome} onHome={handleBackToHome} />
   }
   if (currentPage === 'q4') {
-    return <Question4 />
+    // return <Question4 onBack={handleBackToHome} onHome={handleBackToHome} />
   }
   if (currentPage === 'q5') {
-    return <Question5 />
+    // return <Question5 onBack={handleBackToHome} onHome={handleBackToHome} />
   }
 
   return (
@@ -139,7 +139,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-          
         </div>
       </div>
     </div>

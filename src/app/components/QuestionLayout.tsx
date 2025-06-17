@@ -59,11 +59,8 @@ export default function QuestionLayout({
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  ข้อ {questionNumber}. {title}
+                  {title}
                 </h1>
-                <p className="text-gray-600 mt-1">
-                  กรุณาตอบคำถามให้ครบถ้วนและชัดเจน
-                </p>
               </div>
             </div>
           </div>
@@ -76,9 +73,6 @@ export default function QuestionLayout({
           {/* Footer */}
           <div className="px-8 py-6 border-t border-gray-200 bg-gray-50 rounded-b-xl">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-600">
-                เมื่อตอบเสร็จแล้ว กรุณาส่งคำตอบไปที่ <strong>HR@croknowsoft.com</strong>
-              </div>
               <div className="flex space-x-3">
                 <button
                   onClick={onBack}
@@ -86,6 +80,8 @@ export default function QuestionLayout({
                 >
                   ย้อนกลับ
                 </button>
+              </div>
+              <div className="flex space-x-3">
                 <button
                   onClick={onHome}
                   className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
