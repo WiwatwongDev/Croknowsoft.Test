@@ -1,5 +1,7 @@
 // src/app/components/Question3.tsx
 
+'use client'
+
 import React, { useState } from 'react';
 import QuestionLayout from './QuestionLayout'
 import { 
@@ -216,7 +218,7 @@ const sampleData = {
   ]
 };
 
-export default function Question3Answers({ onBack, onHome }: Question3Props) {
+export default function Question3({ onBack, onHome }: Question3Props) {
   const [activeTab, setActiveTab] = useState<'answers' | 'data' | 'summary'>('answers');
   const [expandedAnswer, setExpandedAnswer] = useState<string | null>(null);
 
@@ -274,346 +276,297 @@ export default function Question3Answers({ onBack, onHome }: Question3Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-                <ArrowLeftIcon className="w-5 h-5" />
-                <span>ย้อนกลับ</span>
-              </button>
-              <div className="h-6 w-px bg-gray-300"></div>
-              <button className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-                <HomeIcon className="w-5 h-5" />
-                <span>หน้าหลัก</span>
-              </button>
-            </div>
-            <div className="text-sm text-gray-500">แบบทดสอบ Programmer</div>
-          </div>
+    <QuestionLayout
+      questionNumber={3}
+      title="Database & SQL"
+      onBack={onBack}
+      onHome={onHome}
+    >
+      <div className="space-y-8">
+        {/* Tabs */}
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('answers')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'answers'
+                  ? 'border-purple-500 text-purple-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <CodeBracketIcon className="w-4 h-4 inline mr-1" />
+              คำตอบทั้งหมด
+            </button>
+            <button
+              onClick={() => setActiveTab('data')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'data'
+                  ? 'border-purple-500 text-purple-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <TableCellsIcon className="w-4 h-4 inline mr-1" />
+              ข้อมูลตัวอย่าง
+            </button>
+            <button
+              onClick={() => setActiveTab('summary')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'summary'
+                  ? 'border-purple-500 text-purple-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <ChartBarIcon className="w-4 h-4 inline mr-1" />
+              สรุปผล
+            </button>
+          </nav>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-xl shadow-lg">
-          {/* Question Header */}
-          <div className="px-8 py-6 border-b border-gray-200">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">3</span>
+        {/* Tab Content */}
+        {activeTab === 'answers' && (
+          <div className="space-y-6">
+            {sqlAnswers.map((answer) => (
+              <div key={answer.id} className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
+                <div className="bg-white px-6 py-4 border-b border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        ข้อ {answer.id} {answer.title}
+                      </h3>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getDifficultyColor(answer.difficulty)}`}>
+                        {getDifficultyStars(answer.difficulty)}
+                      </span>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(answer.type)}`}>
+                        {answer.type}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setExpandedAnswer(expandedAnswer === answer.id ? null : answer.id)}
+                      className="flex items-center space-x-1 px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                    >
+                      <PlayIcon className="w-3 h-3" />
+                      <span>{expandedAnswer === answer.id ? 'ซ่อน' : 'แสดง'}</span>
+                    </button>
+                  </div>
+                  <p className="text-gray-600 text-sm mt-1">{answer.description}</p>
+                </div>
+
+                {expandedAnswer === answer.id && (
+                  <div className="p-6 space-y-4">
+                    {/* SQL Query */}
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                        <CodeBracketIcon className="w-4 h-4 mr-1" />
+                        SQL Query
+                      </h4>
+                      <pre className="bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto">
+                        <code>{answer.query}</code>
+                      </pre>
+                    </div>
+
+                    {/* Result */}
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                        <TableCellsIcon className="w-4 h-4 mr-1" />
+                        ผลลัพธ์
+                      </h4>
+                      {renderTable(answer.result)}
+                    </div>
+
+                    {/* Success Badge */}
+                    <div className="flex items-center justify-center py-3">
+                      <div className="flex items-center space-x-2 text-green-600">
+                        <CheckCircleIcon className="w-5 h-5" />
+                        <span className="font-medium">ทำงานสำเร็จ</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Database & SQL - คำตอบ</h1>
-                <p className="text-gray-600">SQL Queries และผลลัพธ์การทำงาน</p>
-              </div>
-            </div>
+            ))}
           </div>
+        )}
 
-          {/* Tabs */}
-          <div className="border-b border-gray-200">
-            <nav className="flex space-x-8 px-8" aria-label="Tabs">
-              <button
-                onClick={() => setActiveTab('answers')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'answers'
-                    ? 'border-purple-500 text-purple-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <CodeBracketIcon className="w-4 h-4 inline mr-1" />
-                คำตอบทั้งหมด
-              </button>
-              <button
-                onClick={() => setActiveTab('data')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'data'
-                    ? 'border-purple-500 text-purple-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <TableCellsIcon className="w-4 h-4 inline mr-1" />
-                ข้อมูลตัวอย่าง
-              </button>
-              <button
-                onClick={() => setActiveTab('summary')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'summary'
-                    ? 'border-purple-500 text-purple-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <ChartBarIcon className="w-4 h-4 inline mr-1" />
-                สรุปผล
-              </button>
-            </nav>
-          </div>
-
-          {/* Tab Content */}
-          <div className="p-8">
-            {activeTab === 'answers' && (
+        {activeTab === 'data' && (
+          <div className="space-y-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-blue-900 mb-4">ข้อมูลตัวอย่างที่ใช้ในการทดสอบ</h3>
+              
               <div className="space-y-6">
-                {sqlAnswers.map((answer) => (
-                  <div key={answer.id} className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
-                    <div className="bg-white px-6 py-4 border-b border-gray-200">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            ข้อ {answer.id} {answer.title}
-                          </h3>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getDifficultyColor(answer.difficulty)}`}>
-                            {getDifficultyStars(answer.difficulty)}
-                          </span>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(answer.type)}`}>
-                            {answer.type}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => setExpandedAnswer(expandedAnswer === answer.id ? null : answer.id)}
-                          className="flex items-center space-x-1 px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
-                        >
-                          <PlayIcon className="w-3 h-3" />
-                          <span>{expandedAnswer === answer.id ? 'ซ่อน' : 'แสดง'}</span>
-                        </button>
-                      </div>
-                      <p className="text-gray-600 text-sm mt-1">{answer.description}</p>
-                    </div>
-
-                    {expandedAnswer === answer.id && (
-                      <div className="p-6 space-y-4">
-                        {/* SQL Query */}
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
-                            <CodeBracketIcon className="w-4 h-4 mr-1" />
-                            SQL Query
-                          </h4>
-                          <pre className="bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto">
-                            <code>{answer.query}</code>
-                          </pre>
-                        </div>
-
-                        {/* Result */}
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
-                            <TableCellsIcon className="w-4 h-4 mr-1" />
-                            ผลลัพธ์
-                          </h4>
-                          {renderTable(answer.result)}
-                        </div>
-
-                        {/* Success Badge */}
-                        <div className="flex items-center justify-center py-3">
-                          <div className="flex items-center space-x-2 text-green-600">
-                            <CheckCircleIcon className="w-5 h-5" />
-                            <span className="font-medium">ทำงานสำเร็จ</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {activeTab === 'data' && (
-              <div className="space-y-8">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-blue-900 mb-4">ข้อมูลตัวอย่างที่ใช้ในการทดสอบ</h3>
-                  
-                  <div className="space-y-6">
-                    <div>
-                      <h4 className="font-semibold text-blue-800 mb-3">Table: UserMember</h4>
-                      {renderTable(sampleData.userMember)}
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-blue-800 mb-3">Table: UserContact</h4>
-                      {renderTable(sampleData.userContact)}
-                    </div>
-                  </div>
+                <div>
+                  <h4 className="font-semibold text-blue-800 mb-3">Table: UserMember</h4>
+                  {renderTable(sampleData.userMember)}
                 </div>
-
-                {/* Schema Information */}
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">โครงสร้าง Database Schema</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-white border border-gray-300 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-800 mb-3">UserMember Table</h4>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">UserID</span>
-                          <span className="text-blue-600">bigint IDENTITY(1,1) PK</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Username</span>
-                          <span className="text-blue-600">nvarchar(50)</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">FirstName</span>
-                          <span className="text-blue-600">nvarchar(250)</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">LastName</span>
-                          <span className="text-blue-600">nvarchar(250)</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">StatusID</span>
-                          <span className="text-blue-600">bit</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-white border border-gray-300 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-800 mb-3">UserContact Table</h4>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">ContactID</span>
-                          <span className="text-blue-600">bigint IDENTITY(1,1) PK</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">UserID</span>
-                          <span className="text-blue-600">bigint FK</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">ContactDetail</span>
-                          <span className="text-blue-600">nvarchar(100)</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                
+                <div>
+                  <h4 className="font-semibold text-blue-800 mb-3">Table: UserContact</h4>
+                  {renderTable(sampleData.userContact)}
                 </div>
               </div>
-            )}
+            </div>
 
-            {activeTab === 'summary' && (
-              <div className="space-y-8">
-                {/* Overall Summary */}
-                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-green-900 mb-4 flex items-center">
-                    <CheckCircleIcon className="w-5 h-5 mr-2" />
-                    สรุปผลการทำแบบทดสอบ
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">8/8</div>
-                      <div className="text-sm text-green-700">ข้อที่ทำได้</div>
+            {/* Schema Information */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">โครงสร้าง Database Schema</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white border border-gray-300 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-800 mb-3">UserMember Table</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">UserID</span>
+                      <span className="text-blue-600">bigint IDENTITY(1,1) PK</span>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600">100%</div>
-                      <div className="text-sm text-blue-700">เปอร์เซ็นต์</div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Username</span>
+                      <span className="text-blue-600">nvarchar(50)</span>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600">⭐⭐</div>
-                      <div className="text-sm text-purple-700">ระดับเฉลี่ย</div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">FirstName</span>
+                      <span className="text-blue-600">nvarchar(250)</span>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-600">SQL</div>
-                      <div className="text-sm text-orange-700">ทักษะหลัก</div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">LastName</span>
+                      <span className="text-blue-600">nvarchar(250)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">StatusID</span>
+                      <span className="text-blue-600">bit</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Skills Breakdown */}
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">การแยกตามประเภท SQL</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
-                      <div>
-                        <h4 className="font-medium text-blue-900">DDL (Data Definition Language)</h4>
-                        <p className="text-sm text-blue-700">CREATE TABLE</p>
-                      </div>
-                      <span className="text-blue-600 font-bold">1 ข้อ</span>
+                <div className="bg-white border border-gray-300 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-800 mb-3">UserContact Table</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">ContactID</span>
+                      <span className="text-blue-600">bigint IDENTITY(1,1) PK</span>
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
-                      <div>
-                        <h4 className="font-medium text-purple-900">DQL (Data Query Language)</h4>
-                        <p className="text-sm text-purple-700">SELECT, WHERE, JOIN, GROUP BY</p>
-                      </div>
-                      <span className="text-purple-600 font-bold">7 ข้อ</span>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">UserID</span>
+                      <span className="text-blue-600">bigint FK</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">ContactDetail</span>
+                      <span className="text-blue-600">nvarchar(100)</span>
                     </div>
                   </div>
                 </div>
-
-                {/* Difficulty Analysis */}
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">การแยกตามระดับความยาก</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
-                      <div>
-                        <h4 className="font-medium text-green-900">ง่าย ⭐</h4>
-                        <p className="text-sm text-green-700">SELECT, WHERE, COUNT</p>
-                      </div>
-                      <span className="text-green-600 font-bold">3 ข้อ</span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg">
-                      <div>
-                        <h4 className="font-medium text-yellow-900">ปานกลาง ⭐⭐</h4>
-                        <p className="text-sm text-yellow-700">CREATE TABLE, GROUP BY, CASE WHEN</p>
-                      </div>
-                      <span className="text-yellow-600 font-bold">3 ข้อ</span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
-                      <div>
-                        <h4 className="font-medium text-red-900">ยาก ⭐⭐⭐</h4>
-                        <p className="text-sm text-red-700">INNER JOIN, LEFT JOIN</p>
-                      </div>
-                      <span className="text-red-600 font-bold">2 ข้อ</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tips Section */}
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-yellow-900 mb-4 flex items-center">
-                    <LightBulbIcon className="w-5 h-5 mr-2" />
-                    เทคนิคที่ใช้ในการทำข้อสอบ
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <h4 className="font-medium text-yellow-800 mb-2">SQL Functions & Clauses</h4>
-                      <ul className="text-yellow-700 text-sm space-y-1">
-                        <li>• CREATE TABLE - สร้างโครงสร้างตาราง</li>
-                        <li>• SELECT, WHERE - คิวรีและกรองข้อมูล</li>
-                        <li>• COUNT(*), GROUP BY - นับและจัดกลุ่ม</li>
-                        <li>• CASE WHEN - เงื่อนไขแบบมีทางเลือก</li>
-                        <li>• INNER/LEFT JOIN - เชื่อมตาราง</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-yellow-800 mb-2">Best Practices</h4>
-                      <ul className="text-yellow-700 text-sm space-y-1">
-                        <li>• ใช้ N prefix สำหรับ Unicode</li>
-                        <li>• ตั้งชื่อ Alias ด้วย AS</li>
-                        <li>• ใช้ ORDER BY ให้ผลลัพธ์เป็นระเบียบ</li>
-                        <li>• จัดการ NULL ด้วย IS NULL</li>
-                        <li>• ใส่ semicolon ท้าย statement</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Footer */}
-          <div className="px-8 py-6 border-t border-gray-200 bg-gray-50 rounded-b-xl">
-            <div className="flex items-center justify-between">
-              <div className="flex space-x-3">
-                <button className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                  ย้อนกลับ
-                </button>
-              </div>
-              <div className="flex space-x-3">
-                <button className="px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors">
-                  กลับหน้าหลัก
-                </button>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {activeTab === 'summary' && (
+          <div className="space-y-8">
+            {/* Overall Summary */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-green-900 mb-4 flex items-center">
+                <CheckCircleIcon className="w-5 h-5 mr-2" />
+                สรุปผลการทำแบบทดสอบ
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">8/8</div>
+                  <div className="text-sm text-green-700">ข้อที่ทำได้</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">100%</div>
+                  <div className="text-sm text-blue-700">เปอร์เซ็นต์</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">⭐⭐</div>
+                  <div className="text-sm text-purple-700">ระดับเฉลี่ย</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600">SQL</div>
+                  <div className="text-sm text-orange-700">ทักษะหลัก</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Skills Breakdown */}
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">การแยกตามประเภท SQL</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                  <div>
+                    <h4 className="font-medium text-blue-900">DDL (Data Definition Language)</h4>
+                    <p className="text-sm text-blue-700">CREATE TABLE</p>
+                  </div>
+                  <span className="text-blue-600 font-bold">1 ข้อ</span>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+                  <div>
+                    <h4 className="font-medium text-purple-900">DQL (Data Query Language)</h4>
+                    <p className="text-sm text-purple-700">SELECT, WHERE, JOIN, GROUP BY</p>
+                  </div>
+                  <span className="text-purple-600 font-bold">7 ข้อ</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Difficulty Analysis */}
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">การแยกตามระดับความยาก</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                  <div>
+                    <h4 className="font-medium text-green-900">ง่าย ⭐</h4>
+                    <p className="text-sm text-green-700">SELECT, WHERE, COUNT</p>
+                  </div>
+                  <span className="text-green-600 font-bold">3 ข้อ</span>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg">
+                  <div>
+                    <h4 className="font-medium text-yellow-900">ปานกลาง ⭐⭐</h4>
+                    <p className="text-sm text-yellow-700">CREATE TABLE, GROUP BY, CASE WHEN</p>
+                  </div>
+                  <span className="text-yellow-600 font-bold">3 ข้อ</span>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
+                  <div>
+                    <h4 className="font-medium text-red-900">ยาก ⭐⭐⭐</h4>
+                    <p className="text-sm text-red-700">INNER JOIN, LEFT JOIN</p>
+                  </div>
+                  <span className="text-red-600 font-bold">2 ข้อ</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Tips Section */}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-yellow-900 mb-4 flex items-center">
+                <LightBulbIcon className="w-5 h-5 mr-2" />
+                เทคนิคที่ใช้ในการทำข้อสอบ
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-medium text-yellow-800 mb-2">SQL Functions & Clauses</h4>
+                  <ul className="text-yellow-700 text-sm space-y-1">
+                    <li>• CREATE TABLE - สร้างโครงสร้างตาราง</li>
+                    <li>• SELECT, WHERE - คิวรีและกรองข้อมูล</li>
+                    <li>• COUNT(*), GROUP BY - นับและจัดกลุ่ม</li>
+                    <li>• CASE WHEN - เงื่อนไขแบบมีทางเลือก</li>
+                    <li>• INNER/LEFT JOIN - เชื่อมตาราง</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-yellow-800 mb-2">Best Practices</h4>
+                  <ul className="text-yellow-700 text-sm space-y-1">
+                    <li>• ใช้ N prefix สำหรับ Unicode</li>
+                    <li>• ตั้งชื่อ Alias ด้วย AS</li>
+                    <li>• ใช้ ORDER BY ให้ผลลัพธ์เป็นระเบียบ</li>
+                    <li>• จัดการ NULL ด้วย IS NULL</li>
+                    <li>• ใส่ semicolon ท้าย statement</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </QuestionLayout>
   );
 }
