@@ -1,36 +1,349 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📝 แบบทดสอบ Programmer - CroKnowSoft
 
-## Getting Started
+> **คำตอบแบบทดสอบสำหรับตำแหน่ง Programmer**  
+> สร้างด้วย Next.js 15, TypeScript, Tailwind CSS
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=for-the-badge&logo=tailwindcss)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🎯 สารบัญ
+
+- [ภาพรวมโปรเจ็ค](#ภาพรวมโปรเจ็ค)
+- [รายละเอียดแต่ละข้อ](#รายละเอียดแต่ละข้อ)
+- [การติดตั้งและรันโปรเจ็ค](#การติดตั้งและรันโปรเจ็ค)
+- [โครงสร้างโปรเจ็ค](#โครงสร้างโปรเจ็ค)
+- [เทคโนโลยีที่ใช้](#เทคโนโลยีที่ใช้)
+- [คุณสมบัติเด่น](#คุณสมบัติเด่น)
+- [ข้อมูลผู้สมัคร](#ข้อมูลผู้สมัคร)
+
+---
+
+## 🚀 ภาพรวมโปรเจ็ค
+
+แบบทดสอบนี้ประกอบด้วย **5 ข้อหลัก** ที่แสดงความสามารถด้าน Programming ครอบคลุม:
+
+| ข้อที่ | หัวข้อ | เทคโนโลยี | สถานะ |
+|-------|--------|------------|-------|
+| **1** | [Frontend Web Application](#-ข้อ-1-frontend-web-application) | Next.js + Tailwind CSS | ✅ สมบูรณ์ |
+| **2** | [Programming Logic](#-ข้อ-2-programming-logic) | JavaScript/TypeScript | ✅ สมบูรณ์ |
+| **3** | [Database & SQL](#-ข้อ-3-database--sql) | SQL Server + T-SQL | ✅ สมบูรณ์ |
+| **4** | [Database Design (ER Diagram)](#-ข้อ-4-database-design-er-diagram) | ER Diagram + SQL | ✅ สมบูรณ์ |
+| **5** | [Calculator Application](#-ข้อ-5-calculator-application) | React Components | ✅ สมบูรณ์ |
+
+### 🌟 ไฮไลท์
+- **Interactive Web Application** - ทุกคำตอบทำงานได้จริง
+- **Live Demo** - ทดสอบ function ได้ทันที
+- **Complete Documentation** - คำอธิบายครบถ้วน
+- **Professional UI/UX** - ออกแบบสวยงาม responsive
+- **Best Practices** - เขียนโค้ดตามมาตรฐาน
+
+---
+
+## 📋 รายละเอียดแต่ละข้อ
+
+### 🎨 ข้อ 1: Frontend Web Application
+
+**โจทย์:** สร้าง Web Layout ตามรูปแบบที่กำหนด
+
+**คำตอบ:**
+- ✅ **Live Demo** - แสดงผลจริงใน browser
+- ✅ **Responsive Design** - รองรับทุกหน้าจอ
+- ✅ **Modern CSS** - Gradient, Animation, Hover Effects
+- ✅ **Component Structure** - แยกเป็น React Components
+
+**เทคโนโลジี:**
+```typescript
+// Next.js + TypeScript + Tailwind CSS
+- Layout: CSS Grid, Flexbox
+- Styling: Tailwind Utility Classes
+- Animations: CSS Transitions & Transforms
+- Responsive: Mobile-first approach
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🧮 ข้อ 2: Programming Logic
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**โจทย์:** เขียน Function สำหรับ:
+1. ตรวจสอบ Input (null, empty, whitespace)
+2. คำนวณอายุจากวัน-เดือน-ปี  
+3. หาผลรวมเฉพาะตัวเลขจาก String Array
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**คำตอบ:**
+- ✅ **Working Functions** - ทดสอบได้จริงใน UI
+- ✅ **Error Handling** - จัดการ edge cases ครบถ้วน
+- ✅ **Interactive Testing** - ระบบทดสอบ real-time
+- ✅ **Code Explanation** - อธิบายอัลกอริทึม
 
-## Learn More
+**ตัวอย่างโค้ด:**
+```javascript
+// ข้อ 2.1 - ตรวจสอบ Input
+function checkInput(input) {
+    if (input === null || input === undefined) {
+        return "กรุณาระบุข้อความ";
+    }
+    if (input === "" || input.trim() === "") {
+        return "กรุณาระบุข้อความ";
+    }
+    return input;
+}
 
-To learn more about Next.js, take a look at the following resources:
+// ข้อ 2.3 - หาผลรวมจาก Array
+// Input: ["a","100","b","99","Hello","*", "20","1A","10+"]
+// Output: 219 (100 + 99 + 20)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🗃️ ข้อ 3: Database & SQL
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**โจทย์:** สร้าง Table และเขียน SQL Query ต่างๆ
 
-## Deploy on Vercel
+**คำตอบ:**
+- ✅ **8 SQL Queries** - ครบทุกข้อที่โจทย์กำหนด
+- ✅ **CREATE TABLE** - โครงสร้าง UserMember สมบูรณ์
+- ✅ **Advanced Queries** - JOIN, GROUP BY, CASE WHEN
+- ✅ **Result Tables** - แสดงผลลัพธ์แต่ละ Query
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**SQL Highlights:**
+```sql
+-- ข้อ 3.6 - เพิ่ม StatusName Column
+SELECT UserID, FirstName, StatusID,
+    CASE 
+        WHEN StatusID = 1 THEN N'ใช้งาน'
+        WHEN StatusID = 0 THEN N'ไม่ใช้งาน'
+    END AS StatusName
+FROM UserMember;
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-- ข้อ 3.7 - INNER JOIN
+SELECT u.Username, c.ContactDetail AS Phone
+FROM UserMember u
+INNER JOIN UserContact c ON u.UserID = c.UserID;
+```
+
+### 📊 ข้อ 4: Database Design (ER Diagram)
+
+**โจทย์:** ออกแบบระบบลางานของพนักงาน
+
+**คำตอบ:**
+- ✅ **6 Tables** - Department, Employee, LeaveType, LeaveRequest, LeaveApproval, LeaveBalance
+- ✅ **Complete ERD** - ครบ Tables, Columns, Data Types, Relationships
+- ✅ **Business Rules** - กฎเกณฑ์และ Constraints
+- ✅ **SQL Scripts** - CREATE TABLE statements พร้อมใช้
+
+**Database Schema:**
+```sql
+-- ตัวอย่าง Table Employee
+CREATE TABLE Employee (
+    EmployeeID      INT IDENTITY(1,1) PRIMARY KEY,
+    EmployeeCode    NVARCHAR(20) NOT NULL UNIQUE,
+    FirstName       NVARCHAR(50) NOT NULL,
+    LastName        NVARCHAR(50) NOT NULL,
+    DepartmentID    INT NOT NULL,
+    SupervisorID    INT NULL,
+    
+    FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID),
+    FOREIGN KEY (SupervisorID) REFERENCES Employee(EmployeeID)
+);
+```
+
+### 🔢 ข้อ 5: Calculator Application
+
+**โจทย์:** สร้างโปรแกรมคำนวณอย่างง่าย
+
+**คำตอบ:**
+- ✅ **Working Calculator** - คำนวณได้จริงใน UI
+- ✅ **Complete Operations** - +, -, ×, ÷
+- ✅ **UI Components** - ปุ่มกด, Display, Clear functions
+- ✅ **Multiple Submission Options** - Source Code, GitHub, Live Demo
+
+**Features:**
+- 🧮 เครื่องคิดเลขที่ใช้งานได้จริง
+- 🎨 UI สวยงาม responsive
+- ⌨️ รองรับการกดปุ่ม
+- 🔄 Clear และ Clear Entry
+- 📱 Mobile-friendly design
+
+---
+
+## 🚀 การติดตั้งและรันโปรเจ็ค
+
+### ข้อกำหนดระบบ
+- **Node.js** 18.0.0 หรือใหม่กว่า
+- **npm, yarn, pnpm หรือ bun**
+
+### วิธีการติดตั้ง
+
+```bash
+# 1. Clone หรือ Download โปรเจ็ค
+git clone [repository-url]
+cd programmer-test
+
+# 2. ติดตั้ง Dependencies
+npm install
+# หรือ
+yarn install
+
+# 3. รันโปรเจ็ค
+npm run dev
+# หรือ
+yarn dev
+
+# 4. เปิด Browser ที่
+http://localhost:3000
+```
+
+### สคริปต์ที่มี
+```json
+{
+  "dev": "next dev --turbopack",    // รัน Development Server
+  "build": "next build",            // Build สำหรับ Production
+  "start": "next start",            // รัน Production Server
+  "lint": "next lint"               // ตรวจสอบ Code Quality
+}
+```
+
+---
+
+## 📁 โครงสร้างโปรเจ็ค
+
+```
+programmer-test/
+├── 📁 src/
+│   ├── 📁 app/
+│   │   ├── 📁 components/          # React Components หลัก
+│   │   │   ├── 📄 Question1.tsx    # ข้อ 1 - Frontend
+│   │   │   ├── 📄 Question2.tsx    # ข้อ 2 - Programming Logic
+│   │   │   ├── 📄 Question3.tsx    # ข้อ 3 - Database & SQL
+│   │   │   ├── 📄 Question4.tsx    # ข้อ 4 - ER Diagram
+│   │   │   ├── 📄 Question5.tsx    # ข้อ 5 - Calculator
+│   │   │   └── 📄 QuestionLayout.tsx # Layout Component
+│   │   ├── 📄 page.tsx             # หน้า Homepage
+│   │   ├── 📄 layout.tsx           # Root Layout
+│   │   └── 📄 globals.css          # Global Styles
+│   └── 📁 public/                  # Static Assets
+├── 📄 package.json                 # Dependencies
+├── 📄 next.config.ts               # Next.js Config
+├── 📄 tailwind.config.js           # Tailwind Config
+├── 📄 tsconfig.json                # TypeScript Config
+├── 📄 ProgrammerTest.docx          # โจทย์ต้นฉบับ
+├── 📄 ระบบลางาน - Database Design.md # เอกสาร ER Diagram
+└── 📄 README.md                    # ไฟล์นี้
+```
+
+---
+
+## 🛠️ เทคโนโลยีที่ใช้
+
+### Frontend Stack
+| เทคโนโลยี | เวอร์ชัน | การใช้งาน |
+|------------|----------|------------|
+| **Next.js** | 15.3.3 | React Framework, SSR, Routing |
+| **React** | 19.0.0 | UI Components, State Management |
+| **TypeScript** | 5.0 | Type Safety, Better DX |
+| **Tailwind CSS** | 4.0 | Utility-first CSS Framework |
+
+### Development Tools
+| Tool | เวอร์ชัน | การใช้งาน |
+|------|----------|------------|
+| **ESLint** | 9.0 | Code Linting |
+| **PostCSS** | Latest | CSS Processing |
+| **Turbopack** | Built-in | Fast Build Tool |
+
+### Additional Libraries
+| Library | การใช้งาน |
+|---------|------------|
+| **@heroicons/react** | Beautiful Icons |
+| **@headlessui/react** | Accessible UI Components |
+| **lucide-react** | Additional Icons |
+| **react-hook-form** | Form Management |
+
+---
+
+## ✨ คุณสมบัติเด่น
+
+### 🎨 User Experience
+- **Interactive UI** - ทุกอย่างคลิกได้ ทดสอบได้
+- **Responsive Design** - รองรับ Mobile, Tablet, Desktop
+- **Modern Animations** - Smooth transitions และ hover effects
+- **Dark/Light Theme** - รองรับ system preference
+
+### 💻 Code Quality
+- **TypeScript** - Type safety และ better intellisense
+- **Component-based** - แยก logic เป็น reusable components
+- **Clean Code** - ตั้งชื่อตัวแปรชัดเจน, มี comments
+- **Best Practices** - ตาม React และ Next.js conventions
+
+### 🚀 Performance
+- **Next.js 15** - ใช้ features ล่าสุด
+- **Turbopack** - Fast development builds
+- **Optimized Components** - ไม่มี unnecessary re-renders
+- **Lazy Loading** - โหลดเฉพาะส่วนที่ต้องการ
+
+### 📱 Responsive Features
+- **Mobile-first** - ออกแบบเริ่มจาก mobile ก่อน
+- **Touch-friendly** - ปุ่มขนาดเหมาะสมสำหรับมือถือ
+- **Adaptive Layout** - ปรับ layout ตามขนาดหน้าจอ
+- **Cross-browser** - ทำงานได้ทุก browser สมัยใหม่
+
+---
+
+## 📞 ข้อมูลผู้สมัคร
+
+**ตำแหน่งที่สมัคร:** Programmer  
+
+### 🎯 Skills ที่แสดงในแบบทดสอบนี้
+
+#### Frontend Development
+- ✅ HTML5, CSS3, JavaScript/TypeScript
+- ✅ React, Next.js Framework
+- ✅ Tailwind CSS, Responsive Design
+- ✅ Component Architecture
+
+#### Backend & Database
+- ✅ SQL Server, T-SQL
+- ✅ Database Design, ER Diagram
+- ✅ Complex Queries, JOINs
+- ✅ Data Normalization
+
+#### Programming Logic
+- ✅ Algorithm Design
+- ✅ Error Handling
+- ✅ Input Validation
+- ✅ Data Type Conversion
+
+#### Software Engineering
+- ✅ Clean Code Principles
+- ✅ Component-based Architecture
+- ✅ Documentation
+- ✅ Version Control (Git)
+
+---
+
+## 🏆 สรุป
+
+แบบทดสอบนี้แสดงให้เห็นถึง:
+
+1. **ความสามารถด้าน Frontend** - สร้าง modern web application ด้วย Next.js
+2. **ทักษะ Programming Logic** - แก้ปัญหาด้วยอัลกอริทึมที่มีประสิทธิภาพ
+3. **ความเชี่ยวชาญ Database** - ออกแบบและเขียน SQL ระดับสูง
+4. **การคิดเชิงระบบ** - ออกแบบ ER Diagram ที่ครบถ้วน
+5. **ประสบการณ์จริง** - สร้าง application ที่ใช้งานได้จริง
+
+**ขอบคุณที่ให้โอกาสในการทำแบบทดสอบนี้** 🙏
+
+---
+
+## 📋 Checklist สำหรับการส่งงาน
+
+- [x] ✅ ครบทั้ง 5 ข้อตามโจทย์
+- [x] ✅ โค้ดทำงานได้จริงไม่มี error
+- [x] ✅ UI/UX สวยงาม professional
+- [x] ✅ มี documentation ครบถ้วน
+- [x] ✅ ทดสอบ responsive design แล้ว
+- [x] ✅ ตรวจสอบ code quality แล้ว
+- [x] ✅ พร้อมส่งให้ HR ตรวจสอบ
+
+**สถานะ: ✅ พร้อมส่ง**
+
+---
+
+*สร้างด้วย ❤️ โดยผู้สมัครตำแหน่ง Programmer*  
+*CroKnowSoft Programming Assessment 2024*

@@ -1,25 +1,24 @@
 {
-  "name": "programmer-test",
-  "version": "0.1.0",
+  "name": "programmer-test-croknowsoft",
+  "version": "1.0.0",
+  "description": "แบบทดสอบ Programmer สำหรับ CroKnowSoft",
+  "author": "[ใส่ชื่อผู้สมัคร]",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
-    "jspdf": "^3.0.1",
     "lucide-react": "^0.516.0",
     "next": "15.3.3",
-    "prismjs": "^1.30.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.58.0",
-    "react-syntax-highlighter": "^15.6.1",
-    "xlsx": "^0.18.5"
+    "react-hook-form": "^7.58.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -31,5 +30,17 @@
     "eslint-config-next": "15.3.3",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "keywords": [
+    "next.js",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "programmer-test",
+    "croknowsoft"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }
