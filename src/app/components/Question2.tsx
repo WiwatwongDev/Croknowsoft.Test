@@ -1,3 +1,5 @@
+// src/app/components/Question2.tsx
+
 'use client'
 
 import { useState } from 'react'

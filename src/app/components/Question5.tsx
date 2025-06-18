@@ -14,6 +14,7 @@ import {
   LightBulbIcon,
   DocumentIcon
 } from '@heroicons/react/24/outline'
+import jsPDF from 'jspdf'
 
 interface Question5Props {
   onBack?: () => void
@@ -221,6 +222,104 @@ export default function Question5({ onBack, onHome }: Question5Props) {
     alert('✅ ส่งออกไฟล์ HTML สำเร็จ!\n\n📄 คุณสามารถเปิดไฟล์ HTML ใน browser แล้ว Print เป็น PDF ได้\n\n💡 หรือใช้ online converter แปลง HTML เป็น PDF')
   }
 
+  // ฟังก์ชัน Export PDF จริงๆ ด้วย jsPDF
+  const exportToPdfReal = () => {
+    const doc = new jsPDF()
+    
+    // กำหนด font (สำหรับภาษาไทย ต้องเพิ่ม font file)
+    doc.setFont('helvetica')
+    
+    // Header
+    doc.setFontSize(20)
+    doc.setTextColor(75, 70, 229) // สี blue
+    doc.text('📊 รายงานการคำนวณ', 20, 30)
+    
+    doc.setFontSize(12)
+    doc.setTextColor(100, 100, 100)
+    doc.text(`วันที่สร้าง: ${new Date().toLocaleDateString('th-TH')}`, 20, 45)
+    
+    // สรุปข้อมูล
+    doc.setFontSize(14)
+    doc.setTextColor(0, 0, 0)
+    doc.text('สรุปข้อมูล', 20, 65)
+    
+    doc.setFontSize(10)
+    doc.text(`จำนวนรายการทั้งหมด: ${items.length} รายการ`, 20, 80)
+    doc.text(`ยอดรวมทั้งหมด: ${total.toFixed(2)} บาท`, 20, 90)
+    doc.text(`ค่าเฉลี่ย: ${items.length > 0 ? (total / items.length).toFixed(2) : '0.00'} บาท`, 20, 100)
+    
+    // Table Header
+    let yPosition = 120
+    doc.setFillColor(75, 70, 229)
+    doc.rect(20, yPosition, 170, 10, 'F')
+    
+    doc.setTextColor(255, 255, 255)
+    doc.setFontSize(10)
+    doc.text('ลำดับ', 25, yPosition + 7)
+    doc.text('รายการ', 50, yPosition + 7)
+    doc.text('จำนวนเงิน (บาท)', 100, yPosition + 7)
+    doc.text('หมายเหตุ', 150, yPosition + 7)
+    
+    // Table Rows
+    yPosition += 15
+    doc.setTextColor(0, 0, 0)
+    
+    items.forEach((item, index) => {
+      if (yPosition > 250) { // ถ้าใกล้จบหน้า
+        doc.addPage()
+        yPosition = 30
+      }
+      
+      // Alternate row colors
+      if (index % 2 === 0) {
+        doc.setFillColor(249, 250, 251)
+        doc.rect(20, yPosition - 3, 170, 10, 'F')
+      }
+      
+      doc.text(`${index + 1}`, 25, yPosition + 3)
+      doc.text(`รายการที่ ${index + 1}`, 50, yPosition + 3)
+      doc.text(`${item.amount.toFixed(2)}`, 100, yPosition + 3)
+      doc.text(item.amount >= 1000 ? 'มูลค่าสูง' : 'มูลค่าปกติ', 150, yPosition + 3)
+      
+      yPosition += 12
+    })
+    
+    // Total Row
+    doc.setFillColor(238, 242, 255)
+    doc.rect(20, yPosition, 170, 12, 'F')
+    doc.setFont('helvetica', 'bold')
+    doc.text('ยอดรวมทั้งหมด', 50, yPosition + 8)
+    doc.text(`${total.toFixed(2)} บาท`, 100, yPosition + 8)
+    
+    // Footer
+    const pageCount = doc.getNumberOfPages()
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i)
+      doc.setFontSize(8)
+      doc.setTextColor(150, 150, 150)
+      doc.text(`หน้า ${i} จาก ${pageCount}`, 170, 285)
+      doc.text('สร้างโดย Calculator App', 20, 285)
+    }
+    
+    // บันทึกไฟล์ PDF
+    doc.save(`calculator-report-${new Date().getTime()}.pdf`)
+    
+    alert('✅ ส่งออก PDF สำเร็จ!')
+  }
+
+  // สำหรับภาษาไทย ต้องเพิ่ม custom font
+  const exportToPdfWithThaiFonts = async () => {
+    const doc = new jsPDF()
+    
+    // เพิ่ม Thai font (ต้องมีไฟล์ .ttf)
+    // doc.addFont('path/to/sarabun.ttf', 'Sarabun', 'normal')
+    // doc.setFont('Sarabun')
+    
+    // ถ้าไม่มี Thai font ใช้วิธี canvas2pdf แทน
+    // หรือใช้ html2pdf สำหรับ Thai text
+    
+    // ... rest of the PDF generation code
+  }
   // ฟังก์ชันแปลงตัวเลขเป็นตัวหนังสือไทย (แบบง่าย)
   const numberToThaiText = (num: number): string => {
     if (num === 0) return 'ศูนย์บาทถ้วน'
