@@ -7,13 +7,10 @@ import QuestionLayout from './QuestionLayout'
 import { 
   CheckCircleIcon, 
   PlayIcon, 
-  DocumentTextIcon, 
   TableCellsIcon,
   CodeBracketIcon,
   ChartBarIcon,
-  LightBulbIcon,
-  ArrowLeftIcon,
-  HomeIcon
+  LightBulbIcon
 } from '@heroicons/react/24/outline';
 
 interface Question3Props {

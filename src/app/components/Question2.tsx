@@ -4,7 +4,7 @@
 
 import { useState } from 'react'
 import QuestionLayout from './QuestionLayout'
-import { CodeBracketIcon, PlayIcon, CheckCircleIcon, CpuChipIcon, LightBulbIcon } from '@heroicons/react/24/outline'
+import { CodeBracketSquareIcon, PlayIcon, CpuChipIcon, LightBulbIcon, CodeBracketIcon } from '@heroicons/react/24/outline'
 
 interface Question2Props {
   onBack?: () => void
@@ -12,37 +12,44 @@ interface Question2Props {
 }
 
 // Working implementations
-const checkInput = (input: any): string => {
+const checkInput = (input: unknown): string => {
   if (input === null || input === undefined) {
     return "กรุณาระบุข้อความ"
   }
-  if (input === "" || String(input).trim() === "") {
+  if (typeof input !== 'string') {
+    return String(input)
+  }
+  if (input.trim() === "") {
     return "กรุณาระบุข้อความ"
   }
-  return String(input)
+  return input
 }
 
-const CalAge = (dateString: string): number => {
-  try {
-    const parts = dateString.split('-')
-    const day = parseInt(parts[0])
-    const month = parseInt(parts[1])
-    const year = parseInt(parts[2])
-    
-    const birthDate = new Date(year, month - 1, day)
-    const today = new Date()
-    
-    let age = today.getFullYear() - birthDate.getFullYear()
-    const monthDiff = today.getMonth() - birthDate.getMonth()
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--
-    }
-    
-    return age
-  } catch (error) {
+const CalAge = (dateString: string): number => { 
+  const parts = dateString.split('-')
+  if (parts.length !== 3) return 0
+  const day = parseInt(parts[0])
+  const month = parseInt(parts[1])
+  const year = parseInt(parts[2])
+  if (
+    isNaN(day) || isNaN(month) || isNaN(year) ||
+    day < 1 || day > 31 || month < 1 || month > 12 || year < 1000
+  ) {
     return 0
   }
+
+  const birthDate = new Date(year, month - 1, day)
+  if (isNaN(birthDate.getTime())) return 0
+  const today = new Date()
+  
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDiff = today.getMonth() - birthDate.getMonth()
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--
+  }
+  
+  return age
 }
 
 const SumTotal = (inputArray: string[]): number => {
@@ -236,7 +243,7 @@ export default function Question2({ onBack, onHome }: Question2Props) {
             {/* Code */}
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <CodeBracketIcon className="w-5 h-5 mr-2" />
+                <CodeBracketSquareIcon className="w-5 h-5 mr-2" />
                 ข้อ 2.1 - คำตอบ
               </h3>
               <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
@@ -276,7 +283,7 @@ export default function Question2({ onBack, onHome }: Question2Props) {
                 {result21 && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                     <h4 className="font-semibold text-green-800 mb-2">ผลลัพธ์:</h4>
-                    <code className="text-green-700 bg-white px-3 py-1 rounded">"{result21}"</code>
+                    <code className="text-green-700 bg-white px-3 py-1 rounded">&quot;{result21}&quot;</code>
                   </div>
                 )}
 
@@ -284,7 +291,7 @@ export default function Question2({ onBack, onHome }: Question2Props) {
                   <h4 className="font-semibold text-yellow-800 mb-2">กรณีทดสอบ:</h4>
                   <div className="space-y-2 text-sm text-yellow-700">
                     <div className="flex justify-between">
-                      <span>Empty string (""):</span>
+                      <span>Empty string (&quot;&quot;):</span>
                       <button 
                         onClick={() => { setTestInput21(''); testQuestion21() }}
                         className="text-blue-600 hover:underline"
@@ -302,7 +309,7 @@ export default function Question2({ onBack, onHome }: Question2Props) {
                       </button>
                     </div>
                     <div className="flex justify-between">
-                      <span>Whitespace ("   "):</span>
+                      <span>Whitespace (&quot;   &quot;):</span>
                       <button 
                         onClick={() => { setTestInput21('   '); testQuestion21() }}
                         className="text-blue-600 hover:underline"
@@ -311,7 +318,7 @@ export default function Question2({ onBack, onHome }: Question2Props) {
                       </button>
                     </div>
                     <div className="flex justify-between">
-                      <span>Valid text ("Hello"):</span>
+                      <span>Valid text (&quot;Hello&quot;):</span>
                       <button 
                         onClick={() => { setTestInput21('Hello'); testQuestion21() }}
                         className="text-blue-600 hover:underline"
@@ -429,7 +436,7 @@ export default function Question2({ onBack, onHome }: Question2Props) {
               <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <h4 className="font-semibold text-gray-800 mb-2">โจทย์ที่กำหนด:</h4>
                 <code className="text-purple-600 text-sm">
-                  String[] InputArray = ["a","100","b","99","Hello","*", "20","1A","10+"];
+                  String[] InputArray = [&quot;a&quot;,&quot;100&quot;,&quot;b&quot;,&quot;99&quot;,&quot;Hello&quot;,&quot;*&quot;, &quot;20&quot;,&quot;1A&quot;,&quot;10+&quot;];
                 </code>
               </div>
             </div>
@@ -489,7 +496,7 @@ export default function Question2({ onBack, onHome }: Question2Props) {
               <p><strong>การตรวจสอบ Input อย่างครอบคลุม:</strong></p>
               <ul className="list-disc list-inside space-y-1 text-sm bg-white p-4 rounded">
                 <li><strong>null/undefined:</strong> ตรวจสอบก่อนเสมอเพื่อป้องกัน Runtime Error</li>
-                <li><strong>Empty string:</strong> ตรวจสอบ "" (string ว่าง)</li>
+                <li><strong>Empty string:</strong> ตรวจสอบ &quot;&quot; (string ว่าง)</li>
                 <li><strong>Whitespace:</strong> ใช้ trim() เอาช่องว่างออก แล้วเช็คว่าเหลืออะไรไหม</li>
                 <li><strong>Valid input:</strong> ส่งคืนค่าเดิมเมื่อผ่านการตรวจสอบทั้งหมด</li>
               </ul>
@@ -499,9 +506,9 @@ export default function Question2({ onBack, onHome }: Question2Props) {
             <div className="text-blue-800 space-y-3">
               <p><strong>การคำนวณอายุที่แม่นยำ:</strong></p>
               <ul className="list-disc list-inside space-y-1 text-sm bg-white p-4 rounded">
-                <li><strong>Parse date:</strong> แยก DD-MM-YYYY ด้วย split('-')</li>
+                <li><strong>Parse date:</strong> แยก DD-MM-YYYY ด้วย split(&apos;-&apos;)</li>
                 <li><strong>Date object:</strong> สร้าง Date โดยระวังเดือนใน JS เริ่มจาก 0</li>
-                <li><strong>Basic calculation:</strong> ปีปัจจุบัน - ปีเกิด</li>
+                <li><strong>Basic calculation:</strong> ปีปัจจุบัน &apos;-&apos; ปีเกิด</li>
                 <li><strong>Birthday adjustment:</strong> ลบ 1 ถ้ายังไม่ถึงวันเกิดในปีนี้</li>
                 <li><strong>Error handling:</strong> คืนค่า 0 เมื่อ input ผิดพลาด</li>
               </ul>

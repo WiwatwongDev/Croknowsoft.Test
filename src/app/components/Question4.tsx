@@ -5,7 +5,6 @@
 import { useState } from 'react'
 import QuestionLayout from './QuestionLayout'
 import { 
-  PresentationChartBarIcon, 
   TableCellsIcon, 
   LinkIcon,
   DocumentTextIcon,
@@ -254,7 +253,31 @@ export default function Question4({ onBack, onHome }: Question4Props) {
 
         {/* Answer Header */}
         <div className="bg-green-900/30 border border-green-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-green-200 mb-3">🎯 คำตอบ</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-semibold text-green-200">🎯 คำตอบ</h3>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setDesignApproach('text')}
+                className={`px-3 py-1 rounded-lg text-sm ${
+                  designApproach === 'text'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Text View
+              </button>
+              <button
+                onClick={() => setDesignApproach('draw')}
+                className={`px-3 py-1 rounded-lg text-sm ${
+                  designApproach === 'draw'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Draw View
+              </button>
+            </div>
+          </div>
           <p className="text-green-100 leading-relaxed">
             ออกแบบฐานข้อมูลระบบลางานด้วย SQL Server รวม 6 Tables หลัก 
             พร้อม Relationships และ Business Rules ที่ครบถ้วน
