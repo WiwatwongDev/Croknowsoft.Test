@@ -85,7 +85,7 @@ export default function Home() {
     return <Question3 onBack={handleBackToHome} onHome={handleBackToHome} />
   }
   if (currentPage === 'q4') {
-    // return <Question4 onBack={handleBackToHome} onHome={handleBackToHome} />
+    return <Question4 onBack={handleBackToHome} onHome={handleBackToHome} />
   }
   if (currentPage === 'q5') {
     // return <Question5 onBack={handleBackToHome} onHome={handleBackToHome} />
