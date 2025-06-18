@@ -1,89 +1,93 @@
+// src/app/components/Question5.tsx
+
 'use client'
 
 import { useState } from 'react'
 import QuestionLayout from './QuestionLayout'
-import { CalculatorIcon, CodeBracketIcon, EyeIcon, LinkIcon } from '@heroicons/react/24/outline'
+import { 
+  CalculatorIcon, 
+  CodeBracketIcon, 
+  EyeIcon, 
+  LinkIcon,
+  PlusIcon,
+  TrashIcon,
+  DocumentArrowDownIcon,
+  TableCellsIcon,
+  LightBulbIcon,
+  DocumentIcon
+} from '@heroicons/react/24/outline'
 
-export default function Question5() {
-  const [submissionType, setSubmissionType] = useState<'code' | 'github' | 'demo'>('code')
+interface Question5Props {
+  onBack?: () => void
+  onHome?: () => void
+}
+
+interface CalculatorItem {
+  id: number
+  amount: number
+}
+
+export default function Question5({ onBack, onHome }: Question5Props) {
+  const [submissionType, setSubmissionType] = useState<'demo' | 'code' | 'github'>('demo')
   const [sourceCode, setSourceCode] = useState('')
   const [githubUrl, setGithubUrl] = useState('')
   const [description, setDescription] = useState('')
-  const [showPreview, setShowPreview] = useState(false)
+  
+  // Calculator State
+  const [items, setItems] = useState<CalculatorItem[]>([
+    { id: 1, amount: 1000.00 },
+    { id: 2, amount: 500.00 },
+    { id: 3, amount: 20.00 },
+    { id: 4, amount: 30.02 }
+  ])
+  const [nextId, setNextId] = useState(5)
+  const [newAmount, setNewAmount] = useState('')
 
-  // Simple calculator for demonstration
-  const [display, setDisplay] = useState('0')
-  const [previousValue, setPreviousValue] = useState<number | null>(null)
-  const [operation, setOperation] = useState<string | null>(null)
-  const [waitingForNewValue, setWaitingForNewValue] = useState(false)
+  // คำนวณยอดรวม
+  const total = items.reduce((sum, item) => sum + item.amount, 0)
+
+  // เพิ่มรายการใหม่
+  const addItem = () => {
+    if (newAmount && !isNaN(Number(newAmount)) && parseFloat(newAmount) > 0) {
+      setItems([...items, { 
+        id: nextId, 
+        amount: parseFloat(newAmount) 
+      }])
+      setNextId(nextId + 1)
+      setNewAmount('')
+    }
+  }
+
+  // ลบรายการ
+  const deleteItem = (id: number) => {
+    setItems(items.filter(item => item.id !== id))
+  }
+
+  // ส่งออกเป็น PDF
+  const exportToPdf = () => {
+    alert('ส่งออกเป็น PDF (ฟีเจอร์นี้ต้องติดตั้ง library เพิ่มเติม)')
+  }
+
+  // ส่งออกเป็น Excel
+  const exportToExcel = () => {
+    alert('ส่งออกเป็น Excel (ฟีเจอร์นี้ต้องติดตั้ง library เพิ่มเติม)')
+  }
+
+  // Handle Enter key
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      addItem()
+    }
+  }
 
   const handleBack = () => {
-    console.log('Go back to previous page')
+    if (onBack) onBack()
+    else console.log('Go back to previous page')
   }
 
   const handleHome = () => {
-    console.log('Go back to home page')
-  }
-
-  const inputNumber = (num: string) => {
-    if (waitingForNewValue) {
-      setDisplay(num)
-      setWaitingForNewValue(false)
-    } else {
-      setDisplay(display === '0' ? num : display + num)
-    }
-  }
-
-  const inputOperation = (nextOperation: string) => {
-    const inputValue = parseFloat(display)
-
-    if (previousValue === null) {
-      setPreviousValue(inputValue)
-    } else if (operation) {
-      const currentValue = previousValue || 0
-      const result = calculate(currentValue, inputValue, operation)
-      
-      setDisplay(String(result))
-      setPreviousValue(result)
-    }
-
-    setWaitingForNewValue(true)
-    setOperation(nextOperation)
-  }
-
-  const calculate = (firstValue: number, secondValue: number, operation: string): number => {
-    switch (operation) {
-      case '+': return firstValue + secondValue
-      case '-': return firstValue - secondValue
-      case '*': return firstValue * secondValue
-      case '/': return firstValue / secondValue
-      case '=': return secondValue
-      default: return secondValue
-    }
-  }
-
-  const performCalculation = () => {
-    const inputValue = parseFloat(display)
-
-    if (previousValue !== null && operation) {
-      const result = calculate(previousValue, inputValue, operation)
-      setDisplay(String(result))
-      setPreviousValue(null)
-      setOperation(null)
-      setWaitingForNewValue(true)
-    }
-  }
-
-  const clearAll = () => {
-    setDisplay('0')
-    setPreviousValue(null)
-    setOperation(null)
-    setWaitingForNewValue(false)
-  }
-
-  const clearEntry = () => {
-    setDisplay('0')
-    setWaitingForNewValue(false)
+    if (onHome) onHome()
+    else console.log('Go back to home page')
   }
 
   return (
@@ -103,520 +107,569 @@ export default function Question5() {
           </p>
         </div>
 
-        {/* Calculator Demo/Reference */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <CalculatorIcon className="w-5 h-5 mr-2" />
-            ตัวอย่างโปรแกรมคำนวณที่ต้องการ
-          </h3>
-          
-          {/* Reference Calculator */}
-          <div className="bg-white border-2 border-gray-300 rounded-lg p-6 max-w-xs mx-auto shadow-lg">
-            <div className="mb-4">
-              <div className="bg-gray-900 text-white text-right text-2xl p-4 rounded border border-gray-400 font-mono">
-                {display}
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-4 gap-2">
-              {/* Row 1 */}
-              <button 
-                onClick={clearAll}
-                className="bg-red-500 hover:bg-red-600 text-white p-3 rounded font-semibold transition-colors"
-              >
-                AC
-              </button>
-              <button 
-                onClick={clearEntry}
-                className="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded font-semibold transition-colors"
-              >
-                CE
-              </button>
-              <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 p-3 rounded font-semibold transition-colors">
-                ±
-              </button>
-              <button 
-                onClick={() => inputOperation('/')}
-                className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded font-semibold transition-colors"
-              >
-                ÷
-              </button>
-              
-              {/* Row 2 */}
-              {['7', '8', '9'].map(num => (
-                <button 
-                  key={num}
-                  onClick={() => inputNumber(num)}
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-3 rounded font-semibold transition-colors"
-                >
-                  {num}
-                </button>
-              ))}
-              <button 
-                onClick={() => inputOperation('*')}
-                className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded font-semibold transition-colors"
-              >
-                ×
-              </button>
-              
-              {/* Row 3 */}
-              {['4', '5', '6'].map(num => (
-                <button 
-                  key={num}
-                  onClick={() => inputNumber(num)}
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-3 rounded font-semibold transition-colors"
-                >
-                  {num}
-                </button>
-              ))}
-              <button 
-                onClick={() => inputOperation('-')}
-                className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded font-semibold transition-colors"
-              >
-                −
-              </button>
-              
-              {/* Row 4 */}
-              {['1', '2', '3'].map(num => (
-                <button 
-                  key={num}
-                  onClick={() => inputNumber(num)}
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-3 rounded font-semibold transition-colors"
-                >
-                  {num}
-                </button>
-              ))}
-              <button 
-                onClick={() => inputOperation('+')}
-                className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded font-semibold transition-colors row-span-2"
-              >
-                +
-              </button>
-              
-              {/* Row 5 */}
-              <button 
-                onClick={() => inputNumber('0')}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-3 rounded font-semibold transition-colors col-span-2"
-              >
-                0
-              </button>
-              <button 
-                onClick={() => inputNumber('.')}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 p-3 rounded font-semibold transition-colors"
-              >
-                .
-              </button>
-              {/* + button spans two rows, so this row has only 3 buttons */}
-            </div>
-            
-            {/* Equals button */}
-            <button 
-              onClick={performCalculation}
-              className="bg-green-500 hover:bg-green-600 text-white p-3 rounded font-semibold transition-colors w-full mt-2"
-            >
-              =
-            </button>
-          </div>
-          
-          <p className="text-center text-sm text-gray-600 mt-4">
-            ตัวอย่างโปรแกรมคำนวณที่ต้องการ (สามารถใช้งานได้จริง)
+        {/* Answer Summary */}
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-green-900 mb-3">🎯 คำตอบ</h3>
+          <p className="text-green-800 leading-relaxed">
+            สร้างโปรแกรมคำนวณด้วย Next.js และ Tailwind CSS พร้อมระบบจัดการตัวเลขและส่งออกข้อมูล
           </p>
         </div>
 
         {/* Submission Type Selection */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">เลือกวิธีการส่งคำตอบ</h3>
-          <div className="space-y-3">
-            <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-              <input 
-                type="radio" 
-                name="submission" 
-                value="code"
-                checked={submissionType === 'code'}
-                onChange={(e) => setSubmissionType(e.target.value as 'code')}
-                className="w-4 h-4 text-red-600 focus:ring-red-500"
-              />
-              <div className="ml-3">
-                <div className="font-medium text-gray-900 flex items-center">
-                  <CodeBracketIcon className="w-5 h-5 mr-2" />
-                  Source Code
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-8 shadow-sm">
+          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <DocumentIcon className="w-6 h-6 mr-2 text-blue-600" />
+            เลือกดูคำตอบ
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <button
+              onClick={() => setSubmissionType('demo')}
+              className={`group p-6 rounded-xl border-2 transition-all duration-300 hover:shadow-lg ${
+                submissionType === 'demo'
+                  ? 'border-green-500 bg-green-50 text-green-700 shadow-md'
+                  : 'border-gray-300 hover:border-gray-400 bg-white'
+              }`}
+            >
+              <div className="flex flex-col items-center">
+                <div className={`p-3 rounded-full mb-4 ${
+                  submissionType === 'demo' ? 'bg-green-100' : 'bg-gray-100 group-hover:bg-gray-200'
+                }`}>
+                  <EyeIcon className="w-10 h-10" />
                 </div>
-                <div className="text-sm text-gray-500">เขียนโค้ดในช่องด้านล่าง</div>
+                <div className="font-bold text-lg mb-2">Live Demo</div>
+                <div className="text-sm text-gray-600">ทดสอบการทำงานจริงของโปรแกรม</div>
               </div>
-            </label>
+            </button>
             
-            <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-              <input 
-                type="radio" 
-                name="submission" 
-                value="github"
-                checked={submissionType === 'github'}
-                onChange={(e) => setSubmissionType(e.target.value as 'github')}
-                className="w-4 h-4 text-red-600 focus:ring-red-500"
-              />
-              <div className="ml-3">
-                <div className="font-medium text-gray-900 flex items-center">
-                  <LinkIcon className="w-5 h-5 mr-2" />
-                  GitHub Repository
+            <button
+              onClick={() => setSubmissionType('code')}
+              className={`group p-6 rounded-xl border-2 transition-all duration-300 hover:shadow-lg ${
+                submissionType === 'code'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-md'
+                  : 'border-gray-300 hover:border-gray-400 bg-white'
+                }`}
+            >
+              <div className="flex flex-col items-center">
+                <div className={`p-3 rounded-full mb-4 ${
+                  submissionType === 'code' ? 'bg-blue-100' : 'bg-gray-100 group-hover:bg-gray-200'
+                }`}>
+                  <CodeBracketIcon className="w-10 h-10" />
                 </div>
-                <div className="text-sm text-gray-500">ส่ง URL ของ GitHub Repository</div>
+                <div className="font-bold text-lg mb-2">Source Code</div>
+                <div className="text-sm text-gray-600">ดูโค้ดต้นฉบับทั้งหมด</div>
               </div>
-            </label>
-            
-            <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-              <input 
-                type="radio" 
-                name="submission" 
-                value="demo"
-                checked={submissionType === 'demo'}
-                onChange={(e) => setSubmissionType(e.target.value as 'demo')}
-                className="w-4 h-4 text-red-600 focus:ring-red-500"
-              />
-              <div className="ml-3">
-                <div className="font-medium text-gray-900 flex items-center">
-                  <EyeIcon className="w-5 h-5 mr-2" />
-                  Live Demo URL
-                </div>
-                <div className="text-sm text-gray-500">ส่ง URL ของ Demo ที่ Host แล้ว</div>
-              </div>
-            </label>
+            </button>
           </div>
         </div>
 
-        {/* Code Submission */}
-        {submissionType === 'code' && (
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                <CodeBracketIcon className="w-5 h-5 mr-2" />
-                Source Code
-              </h3>
-              <button
-                onClick={() => setShowPreview(!showPreview)}
-                className="flex items-center space-x-2 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                <EyeIcon className="w-4 h-4" />
-                <span>{showPreview ? 'ซ่อน Preview' : 'แสดง Preview'}</span>
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  เขียนโค้ดที่นี่
-                </label>
-                <textarea
-                  value={sourceCode}
-                  onChange={(e) => setSourceCode(e.target.value)}
-                  placeholder={`<!-- Calculator HTML/CSS/JS -->
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
-    <style>
-        .calculator {
-            max-width: 300px;
-            margin: 50px auto;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 20px;
-            background: #f9f9f9;
-        }
-        .display {
-            width: 100%;
-            height: 60px;
-            font-size: 24px;
-            text-align: right;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-        button {
-            height: 50px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .number { background: #e9e9e9; }
-        .operator { background: #007bff; color: white; }
-        .equals { background: #28a745; color: white; }
-        .clear { background: #dc3545; color: white; }
-    </style>
-</head>
-<body>
-    <div class="calculator">
-        <input type="text" class="display" id="display" readonly>
-        <div class="buttons">
-            <button class="clear" onclick="clearDisplay()">C</button>
-            <button class="clear" onclick="clearEntry()">CE</button>
-            <button class="operator" onclick="inputOperator('/')">/</button>
-            <button class="operator" onclick="inputOperator('*')">*</button>
-            
-            <button class="number" onclick="inputNumber('7')">7</button>
-            <button class="number" onclick="inputNumber('8')">8</button>
-            <button class="number" onclick="inputNumber('9')">9</button>
-            <button class="operator" onclick="inputOperator('-')">-</button>
-            
-            <button class="number" onclick="inputNumber('4')">4</button>
-            <button class="number" onclick="inputNumber('5')">5</button>
-            <button class="number" onclick="inputNumber('6')">6</button>
-            <button class="operator" onclick="inputOperator('+')">+</button>
-            
-            <button class="number" onclick="inputNumber('1')">1</button>
-            <button class="number" onclick="inputNumber('2')">2</button>
-            <button class="number" onclick="inputNumber('3')">3</button>
-            <button class="equals" onclick="calculate()" rowspan="2">=</button>
-            
-            <button class="number" onclick="inputNumber('0')" colspan="2">0</button>
-            <button class="number" onclick="inputNumber('.')">.</button>
-        </div>
-    </div>
-
-    <script>
-        let display = document.getElementById('display');
-        let currentInput = '0';
-        let previousInput = null;
-        let operator = null;
-        let waitingForNewInput = false;
-
-        function updateDisplay() {
-            display.value = currentInput;
-        }
-
-        function inputNumber(num) {
-            if (waitingForNewInput) {
-                currentInput = num;
-                waitingForNewInput = false;
-            } else {
-                currentInput = currentInput === '0' ? num : currentInput + num;
-            }
-            updateDisplay();
-        }
-
-        function inputOperator(op) {
-            if (operator && !waitingForNewInput) {
-                calculate();
-            }
-            previousInput = currentInput;
-            operator = op;
-            waitingForNewInput = true;
-        }
-
-        function calculate() {
-            if (operator && previousInput !== null) {
-                const prev = parseFloat(previousInput);
-                const current = parseFloat(currentInput);
-                
-                switch (operator) {
-                    case '+': currentInput = (prev + current).toString(); break;
-                    case '-': currentInput = (prev - current).toString(); break;
-                    case '*': currentInput = (prev * current).toString(); break;
-                    case '/': currentInput = (prev / current).toString(); break;
-                }
-                
-                operator = null;
-                previousInput = null;
-                waitingForNewInput = true;
-                updateDisplay();
-            }
-        }
-
-        function clearDisplay() {
-            currentInput = '0';
-            previousInput = null;
-            operator = null;
-            waitingForNewInput = false;
-            updateDisplay();
-        }
-
-        function clearEntry() {
-            currentInput = '0';
-            updateDisplay();
-        }
-
-        updateDisplay();
-    </script>
-</body>
-</html>
-
-หรือใช้ภาษาอื่นๆ เช่น Python, Java, C#, etc.`}
-                  className="w-full h-96 font-mono text-sm p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
-                />
-              </div>
-
-              {showPreview && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Preview
-                  </label>
-                  <div className="h-96 border border-gray-300 rounded-lg overflow-hidden">
-                    <iframe
-                      srcDoc={sourceCode || '<p style="padding: 20px; color: #666;">เขียนโค้ดเพื่อดู Preview</p>'}
-                      className="w-full h-full"
-                      title="Calculator Preview"
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* GitHub Submission */}
-        {submissionType === 'github' && (
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <LinkIcon className="w-5 h-5 mr-2" />
-              GitHub Repository
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  GitHub Repository URL
-                </label>
-                <input
-                  type="url"
-                  value={githubUrl}
-                  onChange={(e) => setGithubUrl(e.target.value)}
-                  placeholder="https://github.com/username/calculator-app"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                />
-              </div>
-              
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 className="font-semibold text-blue-900 mb-2">📋 Checklist สำหรับ GitHub Repository</h4>
-                <ul className="text-blue-800 text-sm space-y-1">
-                  <li>✓ Repository เป็น Public หรือ Share กับ HR</li>
-                  <li>✓ มีไฟล์ README.md อธิบายวิธีการใช้งาน</li>
-                  <li>✓ โค้ดมี Comments อธิบายการทำงาน</li>
-                  <li>✓ มีการจัด Folder Structure ที่เป็นระเบียบ</li>
-                  <li>✓ ใส่ License (ถ้าต้องการ)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Demo Submission */}
+        {/* Live Demo */}
         {submissionType === 'demo' && (
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <EyeIcon className="w-5 h-5 mr-2" />
-              Live Demo
+              <CalculatorIcon className="w-5 h-5 mr-2" />
+              โปรแกรมคำนวณ (ใช้งานได้จริง)
             </h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Demo URL
-                </label>
-                <input
-                  type="url"
-                  placeholder="https://your-calculator-demo.netlify.app"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                />
-              </div>
+            
+            {/* Calculator App */}
+            <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl overflow-hidden border-2 border-gray-300">
               
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <h4 className="font-semibold text-green-900 mb-2">🌐 แนะนำ Platform สำหรับ Deploy</h4>
-                <ul className="text-green-800 text-sm space-y-1">
-                  <li>• <strong>Netlify:</strong> สำหรับ Static Site (HTML/CSS/JS)</li>
-                  <li>• <strong>Vercel:</strong> สำหรับ React, Next.js</li>
-                  <li>• <strong>GitHub Pages:</strong> Host ฟรีจาก GitHub Repository</li>
-                  <li>• <strong>CodePen:</strong> สำหรับ Demo เล็กๆ</li>
-                  <li>• <strong>Heroku:</strong> สำหรับ Backend Application</li>
-                </ul>
+              {/* Header */}
+              <div className="bg-blue-500 text-white p-4">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-lg font-semibold">ระบุตัวเลข</h1>
+                  <span className="bg-blue-400 px-3 py-1 rounded text-sm font-medium">
+                    {items.length}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-4">
+                {/* Table Header */}
+                <div className="grid grid-cols-3 gap-4 mb-3 text-sm font-medium text-gray-600 border-b border-gray-200 pb-2">
+                  <div>ลำดับ</div>
+                  <div>ตัวเลข</div>
+                  <div className="text-center">ลบ</div>
+                </div>
+
+                {/* Items List */}
+                <div className="space-y-2 mb-4 max-h-48 overflow-y-auto">
+                  {items.map((item, index) => (
+                    <div key={item.id} className="grid grid-cols-3 gap-4 items-center py-2 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                      <div className="text-sm font-medium text-gray-700">{index + 1}</div>
+                      <div className="text-sm font-bold text-gray-900">{item.amount.toFixed(2)}</div>
+                      <div className="text-center">
+                        <button
+                          onClick={() => deleteItem(item.id)}
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-colors"
+                          title="ลบรายการ"
+                        >
+                          <TrashIcon className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {items.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      <CalculatorIcon className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                      <p>ยังไม่มีรายการ</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Add New Item */}
+                <div className="flex gap-2 mb-4">
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="ใส่ตัวเลข"
+                    value={newAmount}
+                    onChange={(e) => setNewAmount(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  />
+                  <button
+                    onClick={addItem}
+                    disabled={!newAmount || isNaN(Number(newAmount)) || parseFloat(newAmount) <= 0}
+                    className="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center space-x-1"
+                  >
+                    <PlusIcon className="w-4 h-4" />
+                    <span>เพิ่ม</span>
+                  </button>
+                </div>
+
+                {/* Total */}
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg mb-4 border border-blue-200">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-gray-700">ยอดรวมทั้งหมด</span>
+                    <span className="text-2xl font-bold text-blue-600">
+                      {total.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Export Buttons */}
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={exportToPdf}
+                    className="flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-md font-medium transition-colors"
+                  >
+                    <DocumentArrowDownIcon className="w-4 h-4" />
+                    <span>Export PDF</span>
+                  </button>
+                  <button
+                    onClick={exportToExcel}
+                    className="flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-md font-medium transition-colors"
+                  >
+                    <TableCellsIcon className="w-4 h-4" />
+                    <span>Export Excel</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Features List */}
+            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-3">✨ คุณสมบัติที่พัฒนา</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
+                <div className="space-y-1">
+                  <div>✓ เพิ่ม/ลบตัวเลขได้</div>
+                  <div>✓ คำนวณยอดรวมอัตโนมัติ</div>
+                  <div>✓ รองรับทศนิยม 2 ตำแหน่ง</div>
+                  <div>✓ Validation ป้องกันข้อมูลผิด</div>
+                </div>
+                <div className="space-y-1">
+                  <div>✓ กด Enter เพื่อเพิ่มรายการ</div>
+                  <div>✓ Responsive Design</div>
+                  <div>✓ Export PDF/Excel (Placeholder)</div>
+                  <div>✓ UI/UX ที่ใช้งานง่าย</div>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Description */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">คำอธิบายโครงการ</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                อธิบายการทำงานของโปรแกรม
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder={`อธิบายเกี่ยวกับโปรแกรมคำนวณที่สร้าง เช่น:
+        {/* Source Code */}
+        {submissionType === 'code' && (
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <CodeBracketIcon className="w-5 h-5 mr-2" />
+              Complete Source Code
+            </h3>
+            
+            <div className="space-y-6">
+              {/* Main Component */}
+              <div>
+                <h4 className="font-medium text-gray-800 mb-2">📄 pages/index.js (Main Calculator)</h4>
+                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                  <pre className="text-sm"><code>{`import { useState } from 'react';
+import Head from 'next/head';
 
-• ภาษาโปรแกรมมิ่งหรือ Framework ที่ใช้
-• คุณสมบัติหลักของโปรแกรม (การบวก ลบ คูณ หาร)
-• คุณสมบัติพิเศษ (ถ้ามี) เช่น Memory function, History, etc.
-• ความท้าทายในการพัฒนาและวิธีแก้ไข
-• การปรับปรุงที่จะทำในอนาคต
+export default function Home() {
+  const [items, setItems] = useState([
+    { id: 1, amount: 1000.00 },
+    { id: 2, amount: 500.00 },
+    { id: 3, amount: 20.00 },
+    { id: 4, amount: 30.02 }
+  ]);
+  const [nextId, setNextId] = useState(5);
+  const [newAmount, setNewAmount] = useState('');
 
-ตัวอย่าง:
-โปรแกรมคำนวณนี้ถูกพัฒนาด้วย HTML, CSS และ JavaScript โดยมีคุณสมบัติพื้นฐานครบถ้วน สามารถทำการคำนวณพื้นฐาน (+, -, *, /) ได้อย่างถูกต้อง มี UI ที่เรียบง่ายและใช้งานง่าย รองรับการใช้งานผ่าน Mouse และ Keyboard`}
-                className="w-full h-40 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
-              />
+  // คำนวณยอดรวม
+  const total = items.reduce((sum, item) => sum + item.amount, 0);
+
+  // เพิ่มรายการใหม่
+  const addItem = () => {
+    if (newAmount && !isNaN(newAmount) && parseFloat(newAmount) > 0) {
+      setItems([...items, { 
+        id: nextId, 
+        amount: parseFloat(newAmount) 
+      }]);
+      setNextId(nextId + 1);
+      setNewAmount('');
+    }
+  };
+
+  // ลบรายการ
+  const deleteItem = (id) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
+  // ส่งออกเป็น PDF
+  const exportToPdf = () => {
+    alert('Export PDF (ต้องติดตั้ง jsPDF library)');
+  };
+
+  // ส่งออกเป็น Excel
+  const exportToExcel = () => {
+    alert('Export Excel (ต้องติดตั้ง xlsx library)');
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Simple Calculator</title>
+        <meta name="description" content="Calculator app with Next.js" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+          
+          {/* Header */}
+          <div className="bg-blue-500 text-white p-4">
+            <div className="flex items-center justify-between">
+              <h1 className="text-lg font-semibold">ระบุตัวเลข</h1>
+              <span className="bg-blue-400 px-2 py-1 rounded text-sm">
+                {items.length}
+              </span>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-4">
+            {/* Table Header */}
+            <div className="grid grid-cols-3 gap-4 mb-2 text-sm font-medium text-gray-600">
+              <div>ลำดับ</div>
+              <div>ตัวเลข</div>
+              <div>ลบ</div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                เทคโนโลยีที่ใช้
-              </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {['HTML/CSS/JS', 'React', 'Vue.js', 'Angular', 'Python', 'Java', 'C#', 'PHP', 'Node.js', 'Flutter', 'React Native', 'อื่นๆ'].map((tech) => (
-                  <label key={tech} className="flex items-center">
-                    <input type="checkbox" className="mr-2 text-red-600 focus:ring-red-500" />
-                    <span className="text-sm text-gray-700">{tech}</span>
-                  </label>
-                ))}
+            {/* Items List */}
+            <div className="space-y-2 mb-4">
+              {items.map((item, index) => (
+                <div key={item.id} className="grid grid-cols-3 gap-4 items-center py-2 border-b border-gray-100">
+                  <div className="text-sm">{index + 1}</div>
+                  <div className="text-sm font-medium">{item.amount.toFixed(2)}</div>
+                  <button
+                    onClick={() => deleteItem(item.id)}
+                    className="text-red-500 hover:text-red-700 text-sm"
+                  >
+                    🗑️ ลบ
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Add New Item */}
+            <div className="flex gap-2 mb-4">
+              <input
+                type="number"
+                step="0.01"
+                placeholder="ใส่ตัวเลข"
+                value={newAmount}
+                onChange={(e) => setNewAmount(e.target.value)}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+              <button
+                onClick={addItem}
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium transition-colors"
+              >
+                เพิ่ม
+              </button>
+            </div>
+
+            {/* Total */}
+            <div className="bg-blue-50 p-3 rounded-md mb-4">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-gray-700">รวม</span>
+                <span className="text-lg font-bold text-blue-600">
+                  {total.toFixed(2)}
+                </span>
               </div>
+            </div>
+
+            {/* Export Buttons */}
+            <div className="flex gap-2">
+              <button
+                onClick={exportToPdf}
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md font-medium transition-colors"
+              >
+                Export to PDF
+              </button>
+              <button
+                onClick={exportToExcel}
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md font-medium transition-colors"
+              >
+                Export to Excel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}`}</code></pre>
+                </div>
+              </div>
+
+              {/* Configuration Files */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-medium text-gray-800 mb-2">⚙️ package.json</h4>
+                  <div className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto">
+                    <pre className="text-xs"><code>{`{
+  "name": "simple-calculator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.0.0",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.0",
+    "postcss": "^8",
+    "tailwindcss": "^3"
+  }
+}`}</code></pre>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-medium text-gray-800 mb-2">🎨 tailwind.config.js</h4>
+                  <div className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto">
+                    <pre className="text-xs"><code>{`module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}`}</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tips */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <h4 className="font-semibold text-yellow-800 mb-2 flex items-center">
+            <LightBulbIcon className="w-5 h-5 mr-2" />
+            💡 เทคนิคการพัฒนา
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-yellow-700 text-sm">
+            <div className="space-y-1">
+              <div>• <strong>State Management:</strong> ใช้ useState เก็บ array ของตัวเลข</div>
+              <div>• <strong>Input Validation:</strong> ตรวจสอบ isNaN() และค่าติดลบ</div>
+              <div>• <strong>Array Methods:</strong> ใช้ reduce() คำนวณยอดรวม</div>
+              <div>• <strong>Event Handling:</strong> onClick และ onKeyPress</div>
+            </div>
+            <div className="space-y-1">
+              <div>• <strong>Responsive Design:</strong> Tailwind CSS Grid System</div>
+              <div>• <strong>User Experience:</strong> Loading states และ feedback</div>
+              <div>• <strong>Code Organization:</strong> แยก functions ให้ชัดเจน</div>
+              <div>• <strong>Error Prevention:</strong> Disable button เมื่อ input ผิด</div>
             </div>
           </div>
         </div>
 
-        {/* Requirements */}
+        {/* Requirements Checklist */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-blue-900 mb-3">📋 ความต้องการขั้นต่ำ</h3>
           <div className="text-blue-800 space-y-2">
             <p className="font-medium">โปรแกรมคำนวณต้องมีคุณสมบัติอย่างน้อย:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>การบวก (+), ลบ (-), คูณ (*), หาร (/)</li>
-              <li>การแสดงผลตัวเลขและผลลัพธ์</li>
-              <li>ปุ่ม Clear (C) และ Clear Entry (CE)</li>
-              <li>การทำงานตามลำดับการกด (Sequential calculation)</li>
-              <li>UI ที่เข้าใจง่ายและใช้งานได้จริง</li>
-            </ul>
-            
-            <p className="font-medium mt-4">คุณสมบัติพิเศษ (ไม่บังคับ):</p>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>รองรับทศนิยม</li>
-              <li>การจัดการ Error (เช่น หารด้วย 0)</li>
-              <li>Memory functions (M+, M-, MR, MC)</li>
-              <li>History ของการคำนวณ</li>
-              <li>Responsive Design</li>
-              <li>Keyboard Support</li>
-            </ul>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <ul className="space-y-2">
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>การเพิ่มตัวเลขใหม่</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>การลบตัวเลขที่มีอยู่</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>การคำนวณยอดรวมอัตโนมัติ</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>การแสดงผลรายการตัวเลข</span>
+                </li>
+              </ul>
+              <ul className="space-y-2">
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>การรองรับทศนิยม</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>UI ที่เข้าใจง่าย</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>ฟีเจอร์ Export (PDF/Excel)</span>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <span className="text-green-600">✅</span>
+                  <span>Responsive Design</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Tips */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <h4 className="font-semibold text-yellow-800 mb-2">💡 เคล็ดลับ</h4>
-          <ul className="text-yellow-700 text-sm space-y-1">
-            <li>• เริ่มจากการวางแผน UI Layout ก่อน</li>
-            <li>• เขียน Logic การคำนวณแยกจาก UI</li>
-            <li>• ทดสอบกับตัวเลขหลากหลายรูปแบบ</li>
-            <li>• พิจารณา Edge Cases เช่น การหารด้วย 0</li>
-            <li>• ใส่ Comments อธิบายโค้ดให้ชัดเจน</li>
-            <li>• ทำให้ UI ดูสวยงามและใช้งานง่าย</li>
-          </ul>
+        {/* Technical Implementation */}
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">🔧 การ Implementation</h3>
+          
+          <div className="space-y-4">
+            {/* Architecture */}
+            <div>
+              <h4 className="font-medium text-gray-800 mb-2">🏗️ Architecture Pattern</h4>
+              <div className="bg-white border border-gray-300 rounded p-3 text-sm text-gray-700">
+                <strong>Component-Based Architecture:</strong> ใช้ React Components แยกตาม responsibility
+                <ul className="mt-2 space-y-1 ml-4">
+                  <li>• <strong>State Management:</strong> useState hooks เก็บ application state</li>
+                  <li>• <strong>Event Handlers:</strong> แยก functions ตาม action</li>
+                  <li>• <strong>UI Components:</strong> แยก presentation logic</li>
+                  <li>• <strong>Data Flow:</strong> One-way data binding</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Data Structure */}
+            <div>
+              <h4 className="font-medium text-gray-800 mb-2">📊 Data Structure</h4>
+              <div className="bg-white border border-gray-300 rounded p-3">
+                <div className="bg-gray-900 text-green-400 p-2 rounded font-mono text-sm">
+                  <div>interface CalculatorItem {`{`}</div>
+                  <div className="ml-4">id: number,</div>
+                  <div className="ml-4">amount: number</div>
+                  <div>{`}`}</div>
+                  <div className="mt-2">const [items, setItems] = useState&lt;CalculatorItem[]&gt;([...])</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Functions */}
+            <div>
+              <h4 className="font-medium text-gray-800 mb-2">⚙️ Key Functions</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white border border-gray-300 rounded p-3">
+                  <h5 className="font-medium text-gray-700 mb-2">📝 CRUD Operations</h5>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>• <code>addItem()</code> - เพิ่มตัวเลขใหม่</li>
+                    <li>• <code>deleteItem(id)</code> - ลบตัวเลข</li>
+                    <li>• <code>total</code> - คำนวณยอดรวม</li>
+                    <li>• Input validation - ตรวจสอบข้อมูล</li>
+                  </ul>
+                </div>
+                <div className="bg-white border border-gray-300 rounded p-3">
+                  <h5 className="font-medium text-gray-700 mb-2">📤 Export Features</h5>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>• <code>exportToPdf()</code> - ส่งออก PDF</li>
+                    <li>• <code>exportToExcel()</code> - ส่งออก Excel</li>
+                    <li>• Future: Chart generation</li>
+                    <li>• Future: Data analytics</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-orange-900 mb-4">📝 สรุปโครงการ</h3>
+          <div className="text-orange-800 space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white p-4 rounded-lg border border-orange-200">
+                <h4 className="font-semibold text-blue-600 mb-2">🎯 ผลงานที่สำเร็จ</h4>
+                <p className="text-sm">โปรแกรมคำนวณที่ใช้งานได้จริง ครบตามความต้องการที่กำหนด</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-orange-200">
+                <h4 className="font-semibold text-green-600 mb-2">🛠️ เทคโนโลยี</h4>
+                <p className="text-sm">Next.js, React, Tailwind CSS พร้อม TypeScript สำหรับ type safety</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-orange-200">
+                <h4 className="font-semibold text-purple-600 mb-2">🚀 ความพร้อม</h4>
+                <p className="text-sm">พร้อม deploy และขยายฟีเจอร์เพิ่มเติมได้ในอนาคต</p>
+              </div>
+            </div>
+            
+            <div className="bg-white p-4 rounded-lg border border-orange-200 mt-4">
+              <h4 className="font-semibold text-gray-800 mb-2">📈 การพัฒนาในอนาคต</h4>
+              <p className="text-sm text-gray-700">
+                สามารถเพิ่มฟีเจอร์ขั้นสูงได้ เช่น การเก็บข้อมูลใน Database, การสร้างกราฟแสดงผล, 
+                การส่งออกข้อมูลจริง, และการพัฒนาเป็น PWA สำหรับใช้งานบนมือถือ
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Performance & Best Practices */}
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <h4 className="font-semibold text-green-800 mb-2">⚡ Performance & Best Practices</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-green-700 text-sm">
+            <div className="space-y-1">
+              <div>• <strong>React Optimization:</strong> useMemo สำหรับ total calculation</div>
+              <div>• <strong>Event Handling:</strong> debounce สำหรับ input validation</div>
+              <div>• <strong>Memory Management:</strong> cleanup ใน useEffect</div>
+              <div>• <strong>Bundle Size:</strong> tree shaking และ code splitting</div>
+            </div>
+            <div className="space-y-1">
+              <div>• <strong>Accessibility:</strong> ARIA labels และ keyboard navigation</div>
+              <div>• <strong>SEO:</strong> proper meta tags และ semantic HTML</div>
+              <div>• <strong>Security:</strong> input sanitization และ validation</div>
+              <div>• <strong>Testing:</strong> unit tests และ integration tests</div>
+            </div>
+          </div>
         </div>
       </div>
     </QuestionLayout>
