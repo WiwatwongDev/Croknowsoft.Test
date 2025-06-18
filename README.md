@@ -3,12 +3,17 @@
 > **คำตอบแบบทดสอบสำหรับตำแหน่ง Programmer**  
 > สร้างด้วย Next.js 15, TypeScript, Tailwind CSS
 
-![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8?style=for-the-badge&logo=tailwindcss)
+## 🌟 Live Demo (ทดสอบได้ทันที)
+
+**🚀 [https://croknowsoft-test-2x74.vercel.app](https://croknowsoft-test-2x74.vercel.app)**
+
+*คลิกเพื่อทดสอบแบบทดสอบแบบ Interactive ได้ทันที - ทุก Function ทำงานได้จริง!*
+
+---
 
 ## 🎯 สารบัญ
 
+- [Live Demo](#-live-demo-ทดสอบได้ทันที)
 - [ภาพรวมโปรเจ็ค](#ภาพรวมโปรเจ็ค)
 - [รายละเอียดแต่ละข้อ](#รายละเอียดแต่ละข้อ)
 - [การติดตั้งและรันโปรเจ็ค](#การติดตั้งและรันโปรเจ็ค)
@@ -32,8 +37,9 @@
 | **5** | [Calculator Application](#-ข้อ-5-calculator-application) | React Components | ✅ สมบูรณ์ |
 
 ### 🌟 ไฮไลท์
+- **🌐 Live Demo Available** - [ทดสอบได้ทันทีที่ croknowsoft-test-2x74.vercel.app](https://croknowsoft-test-2x74.vercel.app)
 - **Interactive Web Application** - ทุกคำตอบทำงานได้จริง
-- **Live Demo** - ทดสอบ function ได้ทันที
+- **Real-time Testing** - ทดสอบ function ได้ทันที
 - **Complete Documentation** - คำอธิบายครบถ้วน
 - **Professional UI/UX** - ออกแบบสวยงาม responsive
 - **Best Practices** - เขียนโค้ดตามมาตรฐาน
@@ -47,12 +53,12 @@
 **โจทย์:** สร้าง Web Layout ตามรูปแบบที่กำหนด
 
 **คำตอบ:**
-- ✅ **Live Demo** - แสดงผลจริงใน browser
+- ✅ **Live Demo** - [ทดสอบได้ทันทีที่นี่](https://croknowsoft-test-2x74.vercel.app) - แสดงผลจริงใน browser
 - ✅ **Responsive Design** - รองรับทุกหน้าจอ
 - ✅ **Modern CSS** - Gradient, Animation, Hover Effects
 - ✅ **Component Structure** - แยกเป็น React Components
 
-**เทคโนโลジี:**
+**เทคโนโลจี:**
 ```typescript
 // Next.js + TypeScript + Tailwind CSS
 - Layout: CSS Grid, Flexbox
@@ -69,7 +75,7 @@
 3. หาผลรวมเฉพาะตัวเลขจาก String Array
 
 **คำตอบ:**
-- ✅ **Working Functions** - ทดสอบได้จริงใน UI
+- ✅ **Working Functions** - [ทดสอบได้จริงใน UI](https://croknowsoft-test-2x74.vercel.app)
 - ✅ **Error Handling** - จัดการ edge cases ครบถ้วน
 - ✅ **Interactive Testing** - ระบบทดสอบ real-time
 - ✅ **Code Explanation** - อธิบายอัลกอริทึม
@@ -100,7 +106,7 @@ function checkInput(input) {
 - ✅ **8 SQL Queries** - ครบทุกข้อที่โจทย์กำหนด
 - ✅ **CREATE TABLE** - โครงสร้าง UserMember สมบูรณ์
 - ✅ **Advanced Queries** - JOIN, GROUP BY, CASE WHEN
-- ✅ **Result Tables** - แสดงผลลัพธ์แต่ละ Query
+- ✅ **Result Tables** - [ดูผลลัพธ์แต่ละ Query ได้ที่ Live Demo](https://croknowsoft-test-2x74.vercel.app)
 
 **SQL Highlights:**
 ```sql
@@ -124,7 +130,7 @@ INNER JOIN UserContact c ON u.UserID = c.UserID;
 
 **คำตอบ:**
 - ✅ **6 Tables** - Department, Employee, LeaveType, LeaveRequest, LeaveApproval, LeaveBalance
-- ✅ **Complete ERD** - ครบ Tables, Columns, Data Types, Relationships
+- ✅ **Complete ERD** - [ดู ER Diagram แบบ Interactive ได้ที่ Live Demo](https://croknowsoft-test-2x74.vercel.app)
 - ✅ **Business Rules** - กฎเกณฑ์และ Constraints
 - ✅ **SQL Scripts** - CREATE TABLE statements พร้อมใช้
 
@@ -149,7 +155,7 @@ CREATE TABLE Employee (
 **โจทย์:** สร้างโปรแกรมคำนวณอย่างง่าย
 
 **คำตอบ:**
-- ✅ **Working Calculator** - คำนวณได้จริงใน UI
+- ✅ **Working Calculator** - [ทดลองใช้เครื่องคิดเลขได้ที่ Live Demo](https://croknowsoft-test-2x74.vercel.app)
 - ✅ **Complete Operations** - +, -, ×, ÷
 - ✅ **UI Components** - ปุ่มกด, Display, Clear functions
 - ✅ **Multiple Submission Options** - Source Code, GitHub, Live Demo
@@ -164,6 +170,15 @@ CREATE TABLE Employee (
 ---
 
 ## 🚀 การติดตั้งและรันโปรเจ็ค
+
+### 🌐 ตัวเลือกการทดสอบ
+
+#### 1. Live Demo (แนะนำ - ใช้ได้ทันที)
+**🚀 [https://croknowsoft-test-2x74.vercel.app](https://croknowsoft-test-2x74.vercel.app)**
+
+*เปิดใน browser ได้เลย - ไม่ต้องติดตั้งอะไร*
+
+#### 2. รันในเครื่องตัวเอง
 
 ### ข้อกำหนดระบบ
 - **Node.js** 18.0.0 หรือใหม่กว่า
@@ -247,6 +262,12 @@ programmer-test/
 | **PostCSS** | Latest | CSS Processing |
 | **Turbopack** | Built-in | Fast Build Tool |
 
+### Deployment & Hosting
+| Platform | การใช้งาน |
+|----------|------------|
+| **Vercel** | Production Hosting, Auto Deploy |
+| **GitHub** | Version Control, CI/CD |
+
 ### Additional Libraries
 | Library | การใช้งาน |
 |---------|------------|
@@ -258,6 +279,12 @@ programmer-test/
 ---
 
 ## ✨ คุณสมบัติเด่น
+
+### 🌐 Live Demo Features
+- **🚀 Instant Access** - [เปิดใช้งานได้ทันทีที่ croknowsoft-test-2x74.vercel.app](https://croknowsoft-test-2x74.vercel.app)
+- **📱 Cross-Platform** - ทำงานได้ทุกอุปกรณ์ ทุก browser
+- **⚡ Fast Loading** - โหลดเร็วด้วย Vercel CDN
+- **🔄 Always Updated** - Auto-deploy จาก GitHub
 
 ### 🎨 User Experience
 - **Interactive UI** - ทุกอย่างคลิกได้ ทดสอบได้
@@ -315,6 +342,12 @@ programmer-test/
 - ✅ Documentation
 - ✅ Version Control (Git)
 
+#### Deployment & DevOps
+- ✅ Vercel Deployment
+- ✅ CI/CD Pipeline
+- ✅ Production Optimization
+- ✅ Performance Monitoring
+
 ---
 
 ## 🏆 สรุป
@@ -326,6 +359,12 @@ programmer-test/
 3. **ความเชี่ยวชาญ Database** - ออกแบบและเขียน SQL ระดับสูง
 4. **การคิดเชิงระบบ** - ออกแบบ ER Diagram ที่ครบถ้วน
 5. **ประสบการณ์จริง** - สร้าง application ที่ใช้งานได้จริง
+6. **ทักษะ Deployment** - Deploy production app บน Vercel
+
+### 🌟 พิเศษ: Live Demo
+**🚀 ทดสอบได้ทันทีที่: [https://croknowsoft-test-2x74.vercel.app](https://croknowsoft-test-2x74.vercel.app)**
+
+*ไม่ต้องติดตั้งอะไร - คลิกเข้าไปทดสอบได้เลย!*
 
 **ขอบคุณที่ให้โอกาสในการทำแบบทดสอบนี้** 🙏
 
@@ -339,11 +378,15 @@ programmer-test/
 - [x] ✅ มี documentation ครบถ้วน
 - [x] ✅ ทดสอบ responsive design แล้ว
 - [x] ✅ ตรวจสอบ code quality แล้ว
+- [x] ✅ **Deploy Live Demo สำเร็จแล้ว** 🌐
+- [x] ✅ ทดสอบ Live Demo ใช้งานได้แล้ว
 - [x] ✅ พร้อมส่งให้ HR ตรวจสอบ
 
-**สถานะ: ✅ พร้อมส่ง**
+**สถานะ: ✅ พร้อมส่ง + Live Demo Available**
 
 ---
 
 *สร้างด้วย ❤️ โดยผู้สมัครตำแหน่ง Programmer*  
 *CroKnowSoft Programming Assessment 2024*
+
+**🌐 Live Demo: [https://croknowsoft-test-2x74.vercel.app](https://croknowsoft-test-2x74.vercel.app)**
